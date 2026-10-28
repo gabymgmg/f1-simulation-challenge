@@ -6,6 +6,7 @@ export function validateStrategy(strategy, raceRules) {
     ...checkStintLaps(stints),
     ...checkCompounds(stints, raceRules.validCompounds),
     ...checkTotalLaps(stints, raceRules.raceLaps),
+    ...checkPitStops(stints, raceRules.minimumPitStops),
   ];
 }
 
@@ -36,6 +37,15 @@ function checkTotalLaps(stints, raceLaps) {
   const totalLaps = stints.reduce((sum, stint) => sum + stint.laps, 0);
   if (totalLaps !== raceLaps) {
     return [`Stints add up to ${totalLaps} laps, but the race has ${raceLaps} laps`];
+  }
+  return [];
+}
+
+// Pit stops are derived from the stints: N stints means N - 1 stops
+function checkPitStops(stints, minimumPitStops) {
+  const pitStops = stints.length - 1;
+  if (pitStops < minimumPitStops) {
+    return [`Strategy has ${pitStops} pit stop(s), but at least ${minimumPitStops} are required`];
   }
   return [];
 }
