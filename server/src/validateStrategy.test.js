@@ -81,4 +81,29 @@ describe('validateStrategy', () => {
       ]);
     });
   });
+
+  describe('pit stops', () => {
+    it('rejects a strategy with fewer pit stops than the minimum', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 20 },
+        { compound: 'HARD', laps: 30 },
+      ]);
+      const rulesWithTwoStops = { ...raceRules, minimumPitStops: 2 };
+
+      expect(validateStrategy(strategy, rulesWithTwoStops)).toEqual([
+        'Strategy has 1 pit stop(s), but at least 2 are required',
+      ]);
+    });
+
+    it('accepts a strategy with exactly the minimum pit stops', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 15 },
+        { compound: 'MEDIUM', laps: 15 },
+        { compound: 'HARD', laps: 20 },
+      ]);
+      const rulesWithTwoStops = { ...raceRules, minimumPitStops: 2 };
+
+      expect(validateStrategy(strategy, rulesWithTwoStops)).toEqual([]);
+    });
+  });
 });
