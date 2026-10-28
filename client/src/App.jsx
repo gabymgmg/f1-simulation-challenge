@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchJson, errorMessageFor } from './api.js';
 import RaceInfo from './RaceInfo.jsx';
+import TyreTable from './TyreTable.jsx';
 import StrategyBuilder from './StrategyBuilder.jsx';
 import ResultTable from './ResultTable.jsx';
 
@@ -90,9 +91,12 @@ export default function App() {
       {loading && <p className="loading">Loading...</p>}
       {errorMessage && <p className="error">{errorMessage}</p>}
 
+      {/* Tyres are the same for every race, so they are shown from the start */}
+      {tyres.length > 0 && <TyreTable tyres={tyres} />}
+
       {race && (
         <>
-          <RaceInfo race={race} tyres={tyres} />
+          <RaceInfo race={race} />
           <StrategyBuilder
             stints={stints}
             tyres={tyres}
