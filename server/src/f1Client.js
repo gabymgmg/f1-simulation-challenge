@@ -1,4 +1,6 @@
 const BASE_URL = 'https://tech-challenge101.onrender.com';
+// The free tier can take up to a minute to wake up
+const TIMEOUT_MS = 70_000;
 
 function createError(status, message) {
   const error = new Error(message);
@@ -9,11 +11,19 @@ function createError(status, message) {
 // Calls the F1 API, translates its errors to our status codes
 // and returns the data field of the { statusCode, code, message, data } wrapper.
 async function fetchFromF1(path) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
   let response;
   try {
-    response = await fetch(`${BASE_URL}${path}`);
-  } catch {
+    response = await fetch(`${BASE_URL}${path}`, { signal: controller.signal });
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw createError(504, 'F1 API did not respond in time');
+    }
     throw createError(503, 'F1 API is unavailable');
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   // The API answers 400 when the raceId has an invalid format: for the user it is a race that does not exist
