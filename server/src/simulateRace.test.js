@@ -43,4 +43,14 @@ describe('simulateRace', () => {
     expect(result.stints[0].pitStopTime).toBeCloseTo(22.5); // 20 + 2.5
     expect(result.stints[1].pitStopTime).toBeNull();
   });
+
+  it('resets tyre age after a pit stop and totals stints + pit stops', () => {
+    const result = simulateRace(twoStintRace);
+
+    // HARD starts as a new tyre: 92 + (92 + 0.02 * 1)
+    expect(result.stints[1].stintTime).toBeCloseTo(184.02);
+    expect(result.totalPitStopTime).toBeCloseTo(22.5); // 1 stop
+    // 180.09 + 22.5 + 184.02
+    expect(result.totalTime).toBeCloseTo(386.61);
+  });
 });
