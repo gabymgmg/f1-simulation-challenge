@@ -82,6 +82,18 @@ h2 {
   padding: 4px 8px;
 }
 
+/* Strategy and result are the main content: full width and bigger titles */
+.strategy {
+  margin: 24px 0;
+  border-top: 4px solid var(--accent);
+  padding: 28px;
+}
+
+.strategy h2,
+.result h2 {
+  font-size: 1.5rem;
+}
+
 /* Tables */
 table {
   border-collapse: collapse;
@@ -139,12 +151,46 @@ input {
   width: 90px;
 }
 
+.button-secondary:hover:not(:disabled) {
+  background: var(--page);
+}
+
+.button-primary {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.button-primary:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+
 .stint-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.stint-label {
+  width: 60px;
+  font-weight: 600;
+}
+
+.laps-remaining {
+  font-size: 1.05rem;
+  margin: 20px 0 8px;
+}
+
+.laps-ok strong {
+  color: var(--success);
 }
 
 /* Messages */
