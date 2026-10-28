@@ -11,8 +11,8 @@ function formatTime(totalSeconds) {
 // Shows the breakdown per stint, with the pit stop on the stint that ends with it
 export default function ResultTable({ result }) {
   return (
-    <section>
-      <h3>Result</h3>
+    <section className="card result">
+      <h2>Result</h2>
       <table>
         <thead>
           <tr>
@@ -36,10 +36,12 @@ export default function ResultTable({ result }) {
         </tbody>
       </table>
 
-      <p>Total pit stop time: {formatTime(result.totalPitStopTime)}</p>
-      <p>
-        <strong>Total race time: {formatTime(result.totalTime)}</strong>
-      </p>
+      <p className="muted">Total pit stop time: {formatTime(result.totalPitStopTime)}</p>
+
+      <div className="total-time">
+        <span>Total race time</span>
+        <strong>{formatTime(result.totalTime)}</strong>
+      </div>
     </section>
   );
 }

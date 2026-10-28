@@ -94,6 +94,10 @@ h2 {
   font-size: 1.5rem;
 }
 
+.result {
+  margin-top: 24px;
+}
+
 /* Tables */
 table {
   border-collapse: collapse;
@@ -191,6 +195,23 @@ input {
 
 .laps-ok strong {
   color: var(--success);
+}
+
+/* Result */
+.total-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  background: var(--text);
+  color: #fff;
+}
+
+.total-time strong {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Messages */
