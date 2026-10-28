@@ -218,6 +218,12 @@ input {
   text-align: center;
 }
 
+.result-outdated table,
+.result-outdated .totals,
+.result-outdated .total-time {
+  opacity: 0.45;
+}
+
 .stint-row {
   display: flex;
   flex-wrap: wrap;

@@ -12,6 +12,8 @@ export default function App() {
   const [race, setRace] = useState(null);
   const [stints, setStints] = useState([]);
   const [result, setResult] = useState(null);
+  // True when the stints were edited after the last simulation
+  const [resultOutdated, setResultOutdated] = useState(false);
   const [strategyErrors, setStrategyErrors] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   // Starts as true because races and tyres are requested on the first render
@@ -46,6 +48,11 @@ export default function App() {
       .finally(() => setLoading(false));
   }
 
+  function changeStints(newStints) {
+    setStints(newStints);
+    setResultOutdated(true);
+  }
+
   function simulate() {
     // Clear the previous result so a failed simulation never shows stale data
     setResult(null);
@@ -64,7 +71,10 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-      .then(setResult)
+      .then((data) => {
+        setResult(data);
+        setResultOutdated(false);
+      })
       .catch((error) => {
         if (error.status === 422) {
           setStrategyErrors(error.errors);
@@ -105,7 +115,7 @@ export default function App() {
           stints={stints}
           tyres={tyres}
           raceLaps={race.laps}
-          onChange={setStints}
+          onChange={changeStints}
           onSimulate={simulate}
           disabled={loading || simulating}
           simulating={simulating}
@@ -120,7 +130,7 @@ export default function App() {
         </ul>
       )}
 
-      {result && <ResultTable result={result} />}
+      {result && <ResultTable result={result} outdated={resultOutdated} />}
     </main>
   );
 }

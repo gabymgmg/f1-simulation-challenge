@@ -9,10 +9,11 @@ function formatTime(totalSeconds) {
 }
 
 // Shows the breakdown per stint, with the pit stop on the stint that ends with it
-export default function ResultTable({ result }) {
+export default function ResultTable({ result, outdated }) {
   return (
-    <section className="card result">
+    <section className={outdated ? 'card result result-outdated' : 'card result'}>
       <h2>Result</h2>
+      {outdated && <p className="hint">Strategy changed: simulate again to update.</p>}
       <table>
         <thead>
           <tr>
