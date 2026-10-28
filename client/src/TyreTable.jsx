@@ -14,7 +14,9 @@ export default function TyreTable({ tyres }) {
         <tbody>
           {tyres.map((tyre) => (
             <tr key={tyre.compound}>
-              <td>{tyre.compound}</td>
+              <td>
+                <span className={`compound compound-${tyre.compound.toLowerCase()}`}>{tyre.compound}</span>
+              </td>
               <td>{tyre.pace} s</td>
               <td>{tyre.degradation} s</td>
             </tr>

@@ -131,6 +131,36 @@ thead th {
   line-height: 1.5;
 }
 
+/* Compound badges, coloured like the real tyre sidewalls */
+.compound {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 2px solid;
+}
+
+.compound-soft {
+  border-color: #e10600;
+}
+
+.compound-medium {
+  border-color: #f5c400;
+}
+
+.compound-hard {
+  border-color: #9a9aa3;
+}
+
+.compound-intermediate {
+  border-color: #1a9e3f;
+}
+
+.compound-wet {
+  border-color: #1f6fd1;
+}
+
 /* Form controls */
 button,
 select,

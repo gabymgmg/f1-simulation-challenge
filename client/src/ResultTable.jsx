@@ -27,7 +27,9 @@ export default function ResultTable({ result }) {
           {result.stints.map((stint) => (
             <tr key={stint.stintNumber}>
               <td>{stint.stintNumber}</td>
-              <td>{stint.compound}</td>
+              <td>
+                <span className={`compound compound-${stint.compound.toLowerCase()}`}>{stint.compound}</span>
+              </td>
               <td>{stint.laps}</td>
               <td>{formatTime(stint.stintTime)}</td>
               <td>{stint.pitStopTime === null ? '—' : formatTime(stint.pitStopTime)}</td>
