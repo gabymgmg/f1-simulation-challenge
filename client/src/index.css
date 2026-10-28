@@ -289,6 +289,22 @@ input {
   font-variant-numeric: tabular-nums;
 }
 
+.how-to-read {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.how-to-read h3 {
+  font-size: 0.9rem;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.how-to-read p {
+  margin: 0 0 6px;
+}
+
 /* Messages */
 .muted {
   color: var(--muted);

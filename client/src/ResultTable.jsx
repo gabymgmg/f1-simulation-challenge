@@ -56,6 +56,25 @@ export default function ResultTable({ result, outdated }) {
         <span>Total race time</span>
         <strong>{formatTime(result.totalTime)}</strong>
       </div>
+
+      <div className="legend how-to-read">
+        <h3>How to read this</h3>
+        <p>
+          <strong>Stint time:</strong> total time of the laps driven on that tyre.
+        </p>
+        <p>
+          <strong>Lost to wear:</strong> extra time caused by the tyre getting older. It grows with every lap of
+          the stint and resets after a pit stop.
+        </p>
+        <p>
+          <strong>Pit stop:</strong> fixed cost of stopping to change tyres (pit lane + tyre change). It's the same
+          for every stop.
+        </p>
+        <p>
+          <strong>Tip:</strong> if a stint loses more time to wear than a pit stop costs, stopping earlier would
+          probably be faster.
+        </p>
+      </div>
     </section>
   );
 }
