@@ -19,6 +19,8 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
   const pitStopTime = pitStopLoss + tyreChangeTime;
 
   const stintResults = [];
+  let totalPitStopTime = 0;
+  let totalTime = 0;
 
   for (let i = 0; i < stints.length; i++) {
     const stint = stints[i];
@@ -38,9 +40,14 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
       stintTime,
       pitStopTime: stintPitStopTime,
     });
+
+    totalPitStopTime += stintPitStopTime ?? 0;
+    totalTime += stintTime + (stintPitStopTime ?? 0);
   }
 
   return {
     stints: stintResults,
+    totalPitStopTime,
+    totalTime,
   };
 }
