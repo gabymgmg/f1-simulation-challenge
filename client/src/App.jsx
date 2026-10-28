@@ -47,6 +47,8 @@ export default function App() {
   }
 
   function simulate() {
+    // Clear the previous result so a failed simulation never shows stale data
+    setResult(null);
     setStrategyErrors([]);
     setErrorMessage('');
     setSimulating(true);
