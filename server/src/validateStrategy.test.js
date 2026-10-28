@@ -44,4 +44,17 @@ describe('validateStrategy', () => {
       ]);
     });
   });
+
+  describe('compounds', () => {
+    it('rejects a compound that is not in the tyre list', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 20 },
+        { compound: 'SUPERSOFT', laps: 30 },
+      ]);
+
+      expect(validateStrategy(strategy, raceRules)).toEqual([
+        'Stint 2 uses an unknown compound: SUPERSOFT',
+      ]);
+    });
+  });
 });
