@@ -74,22 +74,22 @@ export default function App() {
 
   return (
     <main>
-      <h1>F1 Strategy Simulator</h1>
-
-      <label>
-        Race{' '}
-        <select value={selectedRaceId} onChange={(event) => selectRace(event.target.value)}>
-          <option value="">Choose a race</option>
-          {races.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.name}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {loading && <p className="loading">Loading...</p>}
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      <header>
+        <h1>F1 Strategy Simulator</h1>
+        <label className="race-select">
+          Select race
+          <select value={selectedRaceId} onChange={(event) => selectRace(event.target.value)}>
+            <option value="">Choose a race</option>
+            {races.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {loading && <p className="muted">Loading...</p>}
+        {errorMessage && <p className="error">{errorMessage}</p>}
+      </header>
 
       <div className="info-grid">
         <RaceInfo race={race} />
@@ -109,7 +109,7 @@ export default function App() {
       )}
 
       {strategyErrors.length > 0 && (
-        <ul className="error">
+        <ul className="error-list">
           {strategyErrors.map((message) => (
             <li key={message}>{message}</li>
           ))}
