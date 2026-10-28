@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getRace } from './f1Client.js';
+import { getRace, getTyres } from './f1Client.js';
 
 // Builds the object fetch resolves with, with only the fields f1Client reads
 function mockResponse(status, body) {
@@ -43,5 +43,27 @@ describe('f1Client', () => {
     );
 
     await expect(getRace('NOT_VALID')).rejects.toMatchObject({ status: 404 });
+  });
+
+  it('returns 503 when the API responds 500', async () => {
+    fetch.mockResolvedValue(
+      mockResponse(500, { statusCode: 500, code: 'ERR5000', message: 'Internal error' })
+    );
+
+    await expect(getTyres()).rejects.toMatchObject({ status: 503 });
+  });
+
+  it('returns 503 when the response has no data', async () => {
+    fetch.mockResolvedValue(mockResponse(200, { statusCode: 200, code: 'RACE2002', message: 'Race retrieved' }));
+
+    await expect(getRace('race-01')).rejects.toMatchObject({ status: 503 });
+  });
+
+  it('returns 503 when the tyre list is empty', async () => {
+    fetch.mockResolvedValue(
+      mockResponse(200, { statusCode: 200, code: 'TYR2001', message: 'Tyre compounds retrieved', data: { tyres: [] } })
+    );
+
+    await expect(getTyres()).rejects.toMatchObject({ status: 503 });
   });
 });
