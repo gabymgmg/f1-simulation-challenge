@@ -8,6 +8,11 @@ function formatTime(totalSeconds) {
   return `${hours}:${String(minutes).padStart(2, '0')}:${seconds.toFixed(1).padStart(4, '0')}`;
 }
 
+// Costs (wear, pit stops) are shown in seconds so they can be compared directly
+function formatCost(seconds) {
+  return `+${seconds.toFixed(1)} s`;
+}
+
 // Shows the breakdown per stint, with the pit stop on the stint that ends with it
 export default function ResultTable({ result, outdated }) {
   return (
@@ -34,8 +39,8 @@ export default function ResultTable({ result, outdated }) {
               </td>
               <td>{stint.laps}</td>
               <td>{formatTime(stint.stintTime)}</td>
-              <td>+{stint.wearTime.toFixed(1)} s</td>
-              <td>{stint.pitStopTime === null ? '—' : formatTime(stint.pitStopTime)}</td>
+              <td>{formatCost(stint.wearTime)}</td>
+              <td>{stint.pitStopTime === null ? '—' : formatCost(stint.pitStopTime)}</td>
             </tr>
           ))}
         </tbody>
@@ -44,11 +49,11 @@ export default function ResultTable({ result, outdated }) {
       <div className="totals">
         <div>
           <span>Total pit stop time</span>
-          <strong>{formatTime(result.totalPitStopTime)}</strong>
+          <strong>{formatCost(result.totalPitStopTime)}</strong>
         </div>
         <div>
           <span>Total lost to wear</span>
-          <strong>{formatTime(result.totalWearTime)}</strong>
+          <strong>{formatCost(result.totalWearTime)}</strong>
         </div>
       </div>
 
