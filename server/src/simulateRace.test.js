@@ -53,4 +53,13 @@ describe('simulateRace', () => {
     // 180.09 + 22.5 + 184.02
     expect(result.totalTime).toBeCloseTo(386.61);
   });
+
+  it('separates the time lost to tyre wear in each stint and in total', () => {
+    const result = simulateRace(twoStintRace);
+
+    // wearTime = stintTime - laps * (baseLapTime + pace)
+    expect(result.stints[0].wearTime).toBeCloseTo(0.09); // 180.09 - 2 * 90
+    expect(result.stints[1].wearTime).toBeCloseTo(0.02); // 184.02 - 2 * 92
+    expect(result.totalWearTime).toBeCloseTo(0.11);
+  });
 });
