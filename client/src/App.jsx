@@ -91,21 +91,21 @@ export default function App() {
       {loading && <p className="loading">Loading...</p>}
       {errorMessage && <p className="error">{errorMessage}</p>}
 
-      {/* Tyres are the same for every race, so they are shown from the start */}
-      {tyres.length > 0 && <TyreTable tyres={tyres} />}
+      <div className="info-grid">
+        <RaceInfo race={race} />
+        {/* Tyres are the same for every race, so they are shown from the start */}
+        {tyres.length > 0 && <TyreTable tyres={tyres} />}
+      </div>
 
       {race && (
-        <>
-          <RaceInfo race={race} />
-          <StrategyBuilder
-            stints={stints}
-            tyres={tyres}
-            raceLaps={race.laps}
-            onChange={setStints}
-            onSimulate={simulate}
-            disabled={loading}
-          />
-        </>
+        <StrategyBuilder
+          stints={stints}
+          tyres={tyres}
+          raceLaps={race.laps}
+          onChange={setStints}
+          onSimulate={simulate}
+          disabled={loading}
+        />
       )}
 
       {strategyErrors.length > 0 && (
