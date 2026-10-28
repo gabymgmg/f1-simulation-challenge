@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { fetchJson, errorMessageFor } from './api.js';
 import RaceInfo from './RaceInfo.jsx';
+import StrategyBuilder from './StrategyBuilder.jsx';
 
 export default function App() {
   const [races, setRaces] = useState([]);
   const [tyres, setTyres] = useState([]);
   const [selectedRaceId, setSelectedRaceId] = useState('');
   const [race, setRace] = useState(null);
+  const [stints, setStints] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   // Starts as true because races and tyres are requested on the first render
   const [loading, setLoading] = useState(true);
@@ -22,9 +24,11 @@ export default function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // A new race starts a new strategy
   function selectRace(raceId) {
     setSelectedRaceId(raceId);
     setRace(null);
+    setStints([]);
     setErrorMessage('');
     if (!raceId) return;
 
@@ -54,7 +58,18 @@ export default function App() {
       {loading && <p className="loading">Loading...</p>}
       {errorMessage && <p className="error">{errorMessage}</p>}
 
-      {race && <RaceInfo race={race} tyres={tyres} />}
+      {race && (
+        <>
+          <RaceInfo race={race} tyres={tyres} />
+          <StrategyBuilder
+            stints={stints}
+            tyres={tyres}
+            raceLaps={race.laps}
+            onChange={setStints}
+            disabled={loading}
+          />
+        </>
+      )}
     </main>
   );
 }
