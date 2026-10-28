@@ -20,6 +20,7 @@ export default function ResultTable({ result }) {
             <th>Compound</th>
             <th>Laps</th>
             <th>Stint time</th>
+            <th>Lost to wear</th>
             <th>Pit stop</th>
           </tr>
         </thead>
@@ -32,13 +33,23 @@ export default function ResultTable({ result }) {
               </td>
               <td>{stint.laps}</td>
               <td>{formatTime(stint.stintTime)}</td>
+              <td>+{stint.wearTime.toFixed(1)} s</td>
               <td>{stint.pitStopTime === null ? '—' : formatTime(stint.pitStopTime)}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <p className="muted">Total pit stop time: {formatTime(result.totalPitStopTime)}</p>
+      <div className="totals">
+        <div>
+          <span>Total pit stop time</span>
+          <strong>{formatTime(result.totalPitStopTime)}</strong>
+        </div>
+        <div>
+          <span>Total lost to wear</span>
+          <strong>{formatTime(result.totalWearTime)}</strong>
+        </div>
+      </div>
 
       <div className="total-time">
         <span>Total race time</span>

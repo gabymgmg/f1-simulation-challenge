@@ -228,6 +228,32 @@ input {
 }
 
 /* Result */
+.totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.totals div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.totals span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.totals strong {
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .total-time {
   display: flex;
   justify-content: space-between;
