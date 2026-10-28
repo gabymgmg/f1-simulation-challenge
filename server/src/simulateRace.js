@@ -20,6 +20,7 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
 
   const stintResults = [];
   let totalPitStopTime = 0;
+  let totalWearTime = 0;
   let totalTime = 0;
 
   for (let i = 0; i < stints.length; i++) {
@@ -28,6 +29,8 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
     // Tyre data comes from the API, the source of truth for pace and degradation.
     const tyre = tyres.find((t) => t.compound === stint.compound);
     const stintTime = calculateStintTime({ stint, tyre, baseLapTime });
+    // What the stint would take with no wear is laps * (baseLapTime + pace); the rest is wear
+    const wearTime = stintTime - stint.laps * (baseLapTime + tyre.pace);
 
     // The last stint ends at the finish line, so it has no pit stop
     const isLastStint = i === stints.length - 1;
@@ -38,9 +41,11 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
       compound: stint.compound,
       laps: stint.laps,
       stintTime,
+      wearTime,
       pitStopTime: stintPitStopTime,
     });
 
+    totalWearTime += wearTime;
     totalPitStopTime += stintPitStopTime ?? 0;
     totalTime += stintTime + (stintPitStopTime ?? 0);
   }
@@ -48,6 +53,7 @@ export function simulateRace({ stints, tyres, baseLapTime, pitStopLoss, tyreChan
   return {
     stints: stintResults,
     totalPitStopTime,
+    totalWearTime,
     totalTime,
   };
 }
