@@ -1,7 +1,16 @@
 // Calls our server. On error it throws with the status, so the UI can choose what to show.
 export async function fetchJson(url, options) {
-  const response = await fetch(url, options);
-  const body = await response.json();
+  let response;
+  let body;
+  try {
+    response = await fetch(url, options);
+    body = await response.json();
+  } catch {
+    // No JSON answer: our server is down (the Vite proxy answers with an empty 500) or there is no network
+    const error = new Error("Can't reach the server");
+    error.serverUnreachable = true;
+    throw error;
+  }
 
   if (!response.ok) {
     const error = new Error(body.message);
@@ -13,6 +22,9 @@ export async function fetchJson(url, options) {
 }
 
 export function errorMessageFor(error) {
+  if (error.serverUnreachable) {
+    return "Can't reach the server. Check that it is running and try again.";
+  }
   if (error.status === 404) {
     return 'Race not found';
   }
