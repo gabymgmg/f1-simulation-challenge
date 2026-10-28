@@ -106,4 +106,28 @@ describe('validateStrategy', () => {
       expect(validateStrategy(strategy, rulesWithTwoStops)).toEqual([]);
     });
   });
+
+  describe('distinct compounds', () => {
+    it('rejects a strategy that uses only one compound', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 20 },
+        { compound: 'SOFT', laps: 30 },
+      ]);
+
+      expect(validateStrategy(strategy, raceRules)).toEqual([
+        'Strategy must use at least two different compounds',
+      ]);
+    });
+  });
+
+  it('returns every error at once so the user can fix them all', () => {
+    const strategy = strategyWith([{ compound: 'SOFT', laps: 0 }]);
+
+    expect(validateStrategy(strategy, raceRules)).toEqual([
+      'Stint 1 must last at least 1 lap',
+      'Stints add up to 0 laps, but the race has 50 laps',
+      'Strategy has 0 pit stop(s), but at least 1 are required',
+      'Strategy must use at least two different compounds',
+    ]);
+  });
 });
