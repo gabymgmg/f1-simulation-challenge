@@ -66,4 +66,20 @@ describe('f1Client', () => {
 
     await expect(getTyres()).rejects.toMatchObject({ status: 503 });
   });
+
+  it('returns 504 when the API does not respond within 70 seconds', async () => {
+    vi.useFakeTimers();
+    // A fetch that never answers and only fails when the request is aborted, like the real one
+    fetch.mockImplementation(
+      (url, { signal }) =>
+        new Promise((resolve, reject) => {
+          signal.addEventListener('abort', () => reject(signal.reason));
+        })
+    );
+
+    const request = getTyres();
+    vi.advanceTimersByTime(70_000);
+
+    await expect(request).rejects.toMatchObject({ status: 504 });
+  });
 });
