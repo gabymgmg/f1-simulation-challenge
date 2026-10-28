@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchJson, errorMessageFor } from './api.js';
 import RaceInfo from './RaceInfo.jsx';
 import StrategyBuilder from './StrategyBuilder.jsx';
+import ResultTable from './ResultTable.jsx';
 
 export default function App() {
   const [races, setRaces] = useState([]);
@@ -9,6 +10,8 @@ export default function App() {
   const [selectedRaceId, setSelectedRaceId] = useState('');
   const [race, setRace] = useState(null);
   const [stints, setStints] = useState([]);
+  const [result, setResult] = useState(null);
+  const [strategyErrors, setStrategyErrors] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   // Starts as true because races and tyres are requested on the first render
   const [loading, setLoading] = useState(true);
@@ -29,6 +32,8 @@ export default function App() {
     setSelectedRaceId(raceId);
     setRace(null);
     setStints([]);
+    setResult(null);
+    setStrategyErrors([]);
     setErrorMessage('');
     if (!raceId) return;
 
@@ -36,6 +41,33 @@ export default function App() {
     fetchJson(`/api/races/${raceId}`)
       .then(setRace)
       .catch((error) => setErrorMessage(errorMessageFor(error)))
+      .finally(() => setLoading(false));
+  }
+
+  function simulate() {
+    setStrategyErrors([]);
+    setErrorMessage('');
+    setLoading(true);
+
+    // The form keeps laps as text; the server expects integers
+    const body = {
+      raceId: selectedRaceId,
+      stints: stints.map((stint) => ({ compound: stint.compound, laps: Number(stint.laps) })),
+    };
+
+    fetchJson('/api/simulation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then(setResult)
+      .catch((error) => {
+        if (error.status === 422) {
+          setStrategyErrors(error.errors);
+        } else {
+          setErrorMessage(errorMessageFor(error));
+        }
+      })
       .finally(() => setLoading(false));
   }
 
@@ -66,10 +98,21 @@ export default function App() {
             tyres={tyres}
             raceLaps={race.laps}
             onChange={setStints}
+            onSimulate={simulate}
             disabled={loading}
           />
         </>
       )}
+
+      {strategyErrors.length > 0 && (
+        <ul className="error">
+          {strategyErrors.map((message) => (
+            <li key={message}>{message}</li>
+          ))}
+        </ul>
+      )}
+
+      {result && <ResultTable result={result} />}
     </main>
   );
 }
