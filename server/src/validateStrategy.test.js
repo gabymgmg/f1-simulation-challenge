@@ -57,4 +57,28 @@ describe('validateStrategy', () => {
       ]);
     });
   });
+
+  describe('total laps', () => {
+    it('rejects stints that add up to fewer laps than the race', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 20 },
+        { compound: 'HARD', laps: 20 },
+      ]);
+
+      expect(validateStrategy(strategy, raceRules)).toEqual([
+        'Stints add up to 40 laps, but the race has 50 laps',
+      ]);
+    });
+
+    it('rejects stints that add up to more laps than the race', () => {
+      const strategy = strategyWith([
+        { compound: 'SOFT', laps: 30 },
+        { compound: 'HARD', laps: 30 },
+      ]);
+
+      expect(validateStrategy(strategy, raceRules)).toEqual([
+        'Stints add up to 60 laps, but the race has 50 laps',
+      ]);
+    });
+  });
 });
