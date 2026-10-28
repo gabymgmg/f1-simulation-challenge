@@ -28,19 +28,14 @@ async function fetchFromF1(path) {
 
   // The API answers 400 when the raceId has an invalid format: for the user it is a race that does not exist
   if (response.status === 404 || response.status === 400) {
-    throw createError(404, `Not found in F1 API: ${path}`);
+    // Only race endpoints take an id, and the API path is not exposed to the user
+    throw createError(404, 'Race not found');
   }
   if (!response.ok) {
     throw createError(503, `F1 API responded with status ${response.status}`);
   }
 
-  let body;
-  try {
-    body = await response.json();
-  } catch {
-    throw createError(503, 'F1 API returned an invalid response');
-  }
-
+  const body = await response.json();
   if (!body.data) {
     throw createError(503, 'F1 API returned no data');
   }
