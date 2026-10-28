@@ -1,5 +1,5 @@
 // Lets the user build the strategy as stints; pit stops are derived by the server
-export default function StrategyBuilder({ stints, tyres, raceLaps, onChange, onSimulate, disabled }) {
+export default function StrategyBuilder({ stints, tyres, raceLaps, onChange, onSimulate, disabled, simulating }) {
   const plannedLaps = stints.reduce((sum, stint) => sum + (Number(stint.laps) || 0), 0);
   const lapsRemaining = raceLaps - plannedLaps;
   const canSimulate = stints.length > 0 && lapsRemaining === 0 && !disabled;
@@ -57,7 +57,7 @@ export default function StrategyBuilder({ stints, tyres, raceLaps, onChange, onS
       </p>
 
       <button className="button-primary" onClick={onSimulate} disabled={!canSimulate}>
-        Simulate
+        {simulating ? 'Simulating...' : 'Simulate'}
       </button>
     </section>
   );

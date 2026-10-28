@@ -16,6 +16,7 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState('');
   // Starts as true because races and tyres are requested on the first render
   const [loading, setLoading] = useState(true);
+  const [simulating, setSimulating] = useState(false);
 
   // Races and tyres do not depend on the selected race, so they are loaded once
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function App() {
   function simulate() {
     setStrategyErrors([]);
     setErrorMessage('');
-    setLoading(true);
+    setSimulating(true);
 
     // The form keeps laps as text; the server expects integers
     const body = {
@@ -69,7 +70,7 @@ export default function App() {
           setErrorMessage(errorMessageFor(error));
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => setSimulating(false));
   }
 
   return (
@@ -104,7 +105,8 @@ export default function App() {
           raceLaps={race.laps}
           onChange={setStints}
           onSimulate={simulate}
-          disabled={loading}
+          disabled={loading || simulating}
+          simulating={simulating}
         />
       )}
 
