@@ -7,6 +7,7 @@ export function validateStrategy(strategy, raceRules) {
     ...checkCompounds(stints, raceRules.validCompounds),
     ...checkTotalLaps(stints, raceRules.raceLaps),
     ...checkPitStops(stints, raceRules.minimumPitStops),
+    ...checkDistinctCompounds(stints),
   ];
 }
 
@@ -46,6 +47,15 @@ function checkPitStops(stints, minimumPitStops) {
   const pitStops = stints.length - 1;
   if (pitStops < minimumPitStops) {
     return [`Strategy has ${pitStops} pit stop(s), but at least ${minimumPitStops} are required`];
+  }
+  return [];
+}
+
+// The strategy must use at least two different compounds (own rule, like the real F1 dry-race rule)
+function checkDistinctCompounds(stints) {
+  const distinctCompounds = new Set(stints.map((stint) => stint.compound));
+  if (distinctCompounds.size < 2) {
+    return ['Strategy must use at least two different compounds'];
   }
   return [];
 }
