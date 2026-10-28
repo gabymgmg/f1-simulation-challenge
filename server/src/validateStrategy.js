@@ -5,6 +5,7 @@ export function validateStrategy(strategy, raceRules) {
   return [
     ...checkStintLaps(stints),
     ...checkCompounds(stints, raceRules.validCompounds),
+    ...checkTotalLaps(stints, raceRules.raceLaps),
   ];
 }
 
@@ -28,4 +29,13 @@ function checkCompounds(stints, validCompounds) {
     }
   });
   return errors;
+}
+
+// The stints must cover exactly the race distance
+function checkTotalLaps(stints, raceLaps) {
+  const totalLaps = stints.reduce((sum, stint) => sum + stint.laps, 0);
+  if (totalLaps !== raceLaps) {
+    return [`Stints add up to ${totalLaps} laps, but the race has ${raceLaps} laps`];
+  }
+  return [];
 }
