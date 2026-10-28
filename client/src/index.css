@@ -205,6 +205,19 @@ input {
   filter: brightness(0.9);
 }
 
+/* Grey instead of faded red, so a disabled Simulate is obvious */
+.button-primary:disabled {
+  background: #c4c4cc;
+  opacity: 1;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
 .stint-row {
   display: flex;
   flex-wrap: wrap;

@@ -59,6 +59,19 @@ export default function StrategyBuilder({ stints, tyres, raceLaps, onChange, onS
       <button className="button-primary" onClick={onSimulate} disabled={!canSimulate}>
         {simulating ? 'Simulating...' : 'Simulate'}
       </button>
+
+      {/* Explain why Simulate is disabled, so the click never seems to do nothing */}
+      {stints.length === 0 && <p className="hint">Add at least one stint to simulate.</p>}
+      {stints.length > 0 && lapsRemaining > 0 && (
+        <p className="hint">
+          Laps must add up to {raceLaps}: add {lapsRemaining} more.
+        </p>
+      )}
+      {lapsRemaining < 0 && (
+        <p className="hint">
+          Laps must add up to {raceLaps}: remove {-lapsRemaining}.
+        </p>
+      )}
     </section>
   );
 }
