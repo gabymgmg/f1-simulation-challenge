@@ -82,6 +82,20 @@ h2 {
   padding: 4px 8px;
 }
 
+/* The race card has fewer rows than the tyres card, so it can use bigger text */
+.info-grid .details {
+  font-size: 1.05rem;
+}
+
+.info-grid .details th,
+.info-grid .details td {
+  padding: 8px;
+}
+
+.info-grid .race-name {
+  font-size: 1.3rem;
+}
+
 /* Strategy and result are the main content: full width and bigger titles */
 .strategy {
   margin: 24px 0;

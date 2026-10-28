@@ -13,7 +13,7 @@ export default function RaceInfo({ race }) {
 
   return (
     <section className="card">
-      <h2>{race.name}</h2>
+      <h2 className="race-name">{race.name}</h2>
       <table className="details">
         <tbody>
           <tr>
